@@ -39,13 +39,19 @@ public class ProductService {
     }
 
     public void addProduct(Product product) {
-        Product productNew = productDaoImpl.findByTitle(product.getTitle());
-        if (productNew != null && productNew.getDescription().equals(product.getDescription())) {
-            productNew.setQuantity(productNew.getQuantity()+1);
-            productDaoImpl.update(productNew);
-        } else {
-            productDaoImpl.save(product);
+
+        List<Product> productList = productDaoImpl.findAll();
+        for (Product prod : productList) {
+            if(product.getTitle().equals(prod.getTitle())) {
+                prod.setDescription(product.getDescription());
+                prod.setPrice(product.getPrice());
+                prod.setQuantity(product.getQuantity());
+                productDaoImpl.update(prod);
+                return;
+            }
         }
+            productDaoImpl.save(product);
+
     }
 
 }

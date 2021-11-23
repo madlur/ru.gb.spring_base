@@ -47,11 +47,11 @@
 
 
     <h3>Добавить товар</h3>
-    <form novalidate ng-submit="addProduct()">
-        <input type="text" ng-model="product.title" placeholder="Введите название товара">
-        <input type="text" ng-model="product.description" placeholder="Введите описание товара">
-        <input type="number" ng-model="product.price" placeholder="Введите стоимость товара">
-        <input type="number" ng-model="product.quantity" placeholder="Введите количество товара">
+    <form ng-submit="addProduct()">
+        <input type="text" required ng-model="product.title" placeholder="Введите название товара">
+        <input type="text" required ng-model="product.description" placeholder="Введите описание товара">
+        <input type="number" required ng-model="product.price" min="1" placeholder="Введите стоимость товара">
+        <input type="number" ng-model="product.quantity" min="1" placeholder="Введите количество товара">
 
         <div>
             <button class="btn btn-success" type="submit">Сохранить</button>
