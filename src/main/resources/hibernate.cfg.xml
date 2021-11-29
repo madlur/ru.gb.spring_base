@@ -6,10 +6,11 @@
         <property name="connection.password"/>
         <property name="connection.pool_size">2</property>
         <property name="dialect">org.hibernate.dialect.H2Dialect</property>
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
         <property name="current_session_context_class">thread</property>
         <property name="hbm2ddl.auto">create-drop</property>
-        <mapping class="edu.geekbrains.spring_test_lesson.Product"/>
+        <mapping class="hibernate_example_2_hw.Product"/>
+        <mapping class="hibernate_example_2_hw.Customer"/>
     </session-factory>
 
 </hibernate-configuration>
