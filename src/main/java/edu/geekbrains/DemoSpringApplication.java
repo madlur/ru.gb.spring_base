@@ -1,4 +1,4 @@
-package edu.geekbrains.spring_test_lesson;
+package edu.geekbrains;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
