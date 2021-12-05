@@ -2,28 +2,55 @@ package edu.geekbrains.spring_test_lesson;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+import java.util.List;
+
+@Component
 public class ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductDaoImpl productDaoImpl;
 
-    public void setProductRepository(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public void setProductDaoImpl(ProductDaoImpl productDaoImpl) {
+        this.productDaoImpl = productDaoImpl;
+    }
+
+    public List<Product> getStartPage() {
+        return productDaoImpl.findAll();
     }
 
     public void changeQuantity(Long productId, Integer delta) {
-        Product product = productRepository.getById(productId);
-        if (product.getQuantity() != 0) {
-            int quantityNew = product.getQuantity() + delta;
-            productRepository.changeProductQuantity(productId, quantityNew);
-        } else if (product.getQuantity() == 0 && delta != -1) {
-            int quantityNew = product.getQuantity() + delta;
-            productRepository.changeProductQuantity(productId, quantityNew);
-        }
 
+        Product product = productDaoImpl.findById(productId);
+        if (product.getQuantity() > 0) {
+            int quantityNew = product.getQuantity() + delta;
+            product.setQuantity(quantityNew);
+            productDaoImpl.update(product);
+        } else if (product.getQuantity() == 0 && delta > 0) {
+            int quantityNew = product.getQuantity() + delta;
+            product.setQuantity(quantityNew);
+            productDaoImpl.update(product);
+        }
+    }
+
+    public void deleteById(Long id) {
+        productDaoImpl.deleteById(id);
+    }
+
+    public void addProduct(Product product) {
+
+        List<Product> productList = productDaoImpl.findAll();
+        for (Product prod : productList) {
+            if(product.getTitle().equals(prod.getTitle())) {
+                prod.setDescription(product.getDescription());
+                prod.setPrice(product.getPrice());
+                prod.setQuantity(product.getQuantity());
+                productDaoImpl.update(prod);
+                return;
+            }
+        }
+            productDaoImpl.save(product);
 
     }
 
