@@ -52,7 +52,7 @@ public class Product implements Serializable {
         this.title = title;
     }
 
-    public BigDecimal Price() {
+    public BigDecimal getPrice() {
         return price;
     }
 
