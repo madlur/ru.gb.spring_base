@@ -6,6 +6,7 @@ import edu.geekbrains.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -19,8 +20,15 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<Product> startPage() {
-        return productService.findAll();
+    public List<Product> startPage(
+            @RequestParam(name = "minFilter", defaultValue = "0") BigDecimal minPrice,
+            @RequestParam(name = "maxFilter", required = false) BigDecimal maxPrice
+    ) {
+        if (maxPrice == null) {
+            maxPrice = BigDecimal.valueOf(Integer.MAX_VALUE);
+        }
+
+        return productService.findByPriceBetween(minPrice, maxPrice);
     }
 
     @GetMapping("/products/get/{id}")
@@ -44,10 +52,10 @@ public class ProductController {
      * в трех вариантах: товары дороже min цены, товары дешевле max цены, или товары, цена которых находится
      * в пределах min-max)
      */
-
-    public void findByPriceBetween(Integer min, Integer max) {
-        productService.findByPriceBetween(min, max);
-    }
+//    @GetMapping("/products/filter")
+//    public List<Product> findAllByPriceBetween(@RequestParam(defaultValue = "0") BigDecimal min, @RequestParam(defaultValue = "2000000000") BigDecimal max) {
+//        return productService.findByPriceBetween(min, max);
+//    }
 
     @GetMapping("/products/change_quantity")
     public void changeQuantity(@RequestParam Long productId, @RequestParam Integer delta) {

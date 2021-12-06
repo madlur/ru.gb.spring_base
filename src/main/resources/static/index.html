@@ -17,17 +17,18 @@
 <div class="container" ng-controller="indexController">
 
     <h3>Фильтр</h3>
-    <form ng-submit="addProduct()">
+    <form ng-submit = "loadProducts()">
         <label>Минимальная цена</label>
-        <input type="number" required ng-model="product.price" placeholder="Введите параметр">
+        <input type="number" id="minFilter" placeholder="Введите параметр" ng-model = "filter.minFilter">
         <label>Максимальная цена</label>
-        <input type="number" ng-model="product.quantity" placeholder="Введите параметр">
-        <button class="btn btn-success" type="submit">Фильтровать</button>
+        <input type="number" id="maxFilter" placeholder="Введите параметр" ng-model = "filter.maxFilter">
+        <button class="btn btn-success" type="submit" >Фильтровать</button>
+
     </form>
 
 
     <h3>Список товаров</h3>
-    <table class="table table-hover" cellpadding="0" cellspacing="0">
+    <table class="table table-hover">
         <tr>
             <td>ID</td>
             <td>Название товара</td>
