@@ -18,6 +18,8 @@
 
     <h3>Фильтр</h3>
     <form ng-submit = "loadProducts()">
+        <label>Название товара</label>
+        <input type="text" id="title" placeholder="Введите параметр" ng-model = "filter.title">
         <label>Минимальная цена</label>
         <input type="number" id="minFilter" placeholder="Введите параметр" ng-model = "filter.minFilter">
         <label>Максимальная цена</label>

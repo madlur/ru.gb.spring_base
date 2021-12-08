@@ -1,15 +1,17 @@
 package edu.geekbrains.controllers;
 
 
+import edu.geekbrains.dto.ProductDto;
 import edu.geekbrains.entities.Product;
 import edu.geekbrains.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/products")
 public class ProductController {
 
     @Autowired
@@ -19,45 +21,41 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
-    public List<Product> startPage(
-            @RequestParam(name = "minFilter", defaultValue = "0") BigDecimal minPrice,
-            @RequestParam(name = "maxFilter", required = false) BigDecimal maxPrice
+    @GetMapping
+    public Page<ProductDto> startPage(
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "minFilter", required = false) BigDecimal minPrice,
+            @RequestParam(name = "maxFilter", required = false) BigDecimal maxPrice,
+            @RequestParam(name = "p", defaultValue = "1") Long page
     ) {
-        if (maxPrice == null) {
-            maxPrice = BigDecimal.valueOf(Integer.MAX_VALUE);
+        if (page < 1) {
+            page = 1L;
         }
-
-        return productService.findByPriceBetween(minPrice, maxPrice);
+        return productService.find(title, minPrice, maxPrice, page);
     }
 
-    @GetMapping("/products/get/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ProductDto getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
-    @GetMapping("/products/delete/{id}")
-    public void deleteProduct(@PathVariable Long id) {
+    @PostMapping
+    public void addProduct(@RequestBody ProductDto productDto) {
+        productDto.setId(null);
+        productService.saveProduct(productDto);
+    }
+
+    @PutMapping
+    public void updateProduct(@RequestBody ProductDto productDto) {
+        productService.saveProduct(productDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);
     }
 
-    @PostMapping("/products/addProduct")
-    public void addProduct(@RequestBody Product product) {
-        productService.addProduct(product);
-    }
-
-    /**
-     * ToDo
-     * 3. * К запросу всех товаров добавьте возможность фильтрации по минимальной и максимальной цене (
-     * в трех вариантах: товары дороже min цены, товары дешевле max цены, или товары, цена которых находится
-     * в пределах min-max)
-     */
-//    @GetMapping("/products/filter")
-//    public List<Product> findAllByPriceBetween(@RequestParam(defaultValue = "0") BigDecimal min, @RequestParam(defaultValue = "2000000000") BigDecimal max) {
-//        return productService.findByPriceBetween(min, max);
-//    }
-
-    @GetMapping("/products/change_quantity")
+    @GetMapping("/change_quantity")
     public void changeQuantity(@RequestParam Long productId, @RequestParam Integer delta) {
         productService.changeQuantity(productId, delta);
     }
