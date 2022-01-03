@@ -44,6 +44,31 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
+    $scope.showCart = function () {
+        $http({
+            url: contextPath + '/carts',
+            method: 'GET',
+        }).then(function (response) {
+            console.log(response)
+            $scope.CartList = response.data;
+        });
+    };
+
+    $scope.addProductToCart = function (productId) {
+        $http.get(contextPath + '/carts/' + productId)
+            .then(function (response) {
+                $scope.CartList = response.data;
+            });
+    };
+
+    $scope.deleteProductFromCart = function (productId) {
+        $http.delete(contextPath + '/carts/' + productId)
+            .then(function (response) {
+                $scope.CartList = response.data;
+            });
+    }
+
     $scope.loadProducts();
+    $scope.showCart();
 })
 ;
