@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -19,8 +20,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<Product> findAll(BigDecimal min, BigDecimal max) {
+        return productRepository.findAllByPriceBetween(min, max);
     }
 
     public Product getProductById(Long id) {
@@ -36,8 +37,8 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void findByPriceBetween(Integer min, Integer max) {
-        productRepository.findAllByPriceBetween(min, max);
+    public List<Product> findByPriceBetween(BigDecimal min, BigDecimal max) {
+        return productRepository.findAllByPriceBetween(min, max);
     }
 
     @Transactional
