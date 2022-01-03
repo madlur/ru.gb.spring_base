@@ -11,3 +11,8 @@ public class DemoSpringApplication {
 	}
 
 }
+
+
+//ToDo доделать обработку ошибок (см. ссылку на видео 1. https://www.youtube.com/watch?v=p_fEDDDiggg )
+//ToDo сделать пагинацию на фронте
+//ToDo распилить фронт на несколько шаблонов 2. https://www.youtube.com/watch?v=Qq1qRp4UX2E
