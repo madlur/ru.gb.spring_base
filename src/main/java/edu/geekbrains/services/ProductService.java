@@ -68,7 +68,7 @@ public class ProductService {
 
     @Transactional
     public void changeQuantity(Long productId, Integer delta) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("ERROR")); //ToDo доделать обработку ошибок
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("ERROR"));
         product.setQuantity((product.getQuantity()) + delta);
     }
 
