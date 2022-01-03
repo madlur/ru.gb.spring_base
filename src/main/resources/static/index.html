@@ -17,14 +17,14 @@
 <div class="container" ng-controller="indexController">
 
     <h3>Фильтр</h3>
-    <form ng-submit = "loadProducts()">
+    <form ng-submit="loadProducts()">
         <label>Название товара</label>
-        <input type="text" id="title" placeholder="Введите параметр" ng-model = "filter.title">
+        <input type="text" id="title" placeholder="Введите параметр" ng-model="filter.title">
         <label>Минимальная цена</label>
-        <input type="number" id="minFilter" placeholder="Введите параметр" ng-model = "filter.minFilter">
+        <input type="number" id="minFilter" placeholder="Введите параметр" ng-model="filter.minFilter">
         <label>Максимальная цена</label>
-        <input type="number" id="maxFilter" placeholder="Введите параметр" ng-model = "filter.maxFilter">
-        <button class="btn btn-success" type="submit" >Фильтровать</button>
+        <input type="number" id="maxFilter" placeholder="Введите параметр" ng-model="filter.maxFilter">
+        <button class="btn btn-success" type="submit">Фильтровать</button>
 
     </form>
 
@@ -34,26 +34,16 @@
         <tr>
             <td>ID</td>
             <td>Название товара</td>
-            <td>Описание товара</td>
             <td>Стоимость</td>
-            <td>Количество</td>
             <td>Удаление</td>
-            <td>Изменение количества</td>
         </tr>
         <tbody>
         <tr ng-repeat="p in ProductsList">
             <td>{{p.id}}</td>
             <td>{{p.title}}</td>
-            <td>{{p.description}}</td>
             <td>{{p.price}}</td>
-            <td>{{p.quantity}}</td>
             <td>
                 <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
-            </td>
-            <td>
-                <button class="btn btn-primary" ng-click="changeQuantity(p.id, -1)">-</button>
-
-                <button class="btn btn-primary" ng-click="changeQuantity(p.id, 1)">+</button>
             </td>
         </tr>
         </tbody>
@@ -63,9 +53,7 @@
     <h3>Добавить товар</h3>
     <form ng-submit="addProduct()">
         <input type="text" required ng-model="product.title" placeholder="Введите название товара">
-        <input type="text" required ng-model="product.description" placeholder="Введите описание товара">
         <input type="number" required ng-model="product.price" min="1" placeholder="Введите стоимость товара">
-        <input type="number" ng-model="product.quantity" min="1" placeholder="Введите количество товара">
 
         <div>
             <button class="btn btn-success" type="submit">Сохранить</button>
