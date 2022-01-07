@@ -13,11 +13,11 @@ import java.util.Collections;
 import java.util.List;
 
 
-@Data
-@NoArgsConstructor
-@Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class Cart {
+//@Data
+//@NoArgsConstructor
+//@Component
+//@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+public class CartOld {
 
     private List<Product> productList;
 

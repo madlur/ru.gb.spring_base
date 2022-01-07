@@ -1,40 +1,33 @@
 package edu.geekbrains.controllers;
 
-import edu.geekbrains.converters.ProductConverter;
-import edu.geekbrains.entities.Cart;
-import edu.geekbrains.entities.Product;
-import edu.geekbrains.exceptions.ResourceNotFoundException;
-import edu.geekbrains.services.ProductService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-import java.util.List;
+import edu.geekbrains.dto.Cart;
+import edu.geekbrains.services.CartService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/carts")
 @RequiredArgsConstructor
 public class CartController {
-
-    private final ProductService productService;
-    private final ProductConverter productConverter;
-    private final Cart cart;
-
+    private final CartService cartService;
 
     @GetMapping
-    public List<Product> showCart() {
-        return cart.getProductList();
+    public Cart getCurrentCart() {
+        return cartService.getCurrentCart();
     }
 
-    @GetMapping("/{id}")
-    public List<Product> addProductToCart(@PathVariable Long id) {
-        cart.addProductToCart(productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id)));
-        return cart.getProductList();
+    @GetMapping("/add/{id}")
+    public void addProductToCart(@PathVariable Long id) {
+        cartService.addProductByIdToCart(id);
     }
 
-    @DeleteMapping("/{id}")
-    public List<Product> deleteProductFromCart(@PathVariable Long id) {
-        cart.deleteFromCart(id);
-        return cart.getProductList();
+    @GetMapping("/clear")
+    public void clearCart() {
+        cartService.getCurrentCart().clear();
     }
 }
+
