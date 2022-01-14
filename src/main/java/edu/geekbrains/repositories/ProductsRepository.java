@@ -9,8 +9,5 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
-
-    List<Product> findAllByPriceBetween(BigDecimal min, BigDecimal max);
-
+public interface ProductsRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 }

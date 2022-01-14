@@ -3,13 +3,13 @@ package edu.geekbrains.dto;
 import edu.geekbrains.entities.Product;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 @Data
 public class Cart {
-
     private List<OrderItemDto> items;
     private int totalPrice;
 
@@ -25,10 +25,9 @@ public class Cart {
         recalculate();
     }
 
-
     public boolean addProduct(Long id) {
         for (OrderItemDto o : items) {
-            if (o.getProductId() == id) {
+            if (o.getProductId().equals(id)) {
                 o.changeQuantity(1);
                 recalculate();
                 return true;
@@ -38,13 +37,13 @@ public class Cart {
     }
 
     public void decreaseProduct(Long id) {
-        Iterator<OrderItemDto> iterator = items.iterator();
-        while (iterator.hasNext()) {
-            OrderItemDto o = iterator.next();
+        Iterator<OrderItemDto> iter = items.iterator();
+        while (iter.hasNext()) {
+            OrderItemDto o = iter.next();
             if (o.getProductId().equals(id)) {
                 o.changeQuantity(-1);
                 if (o.getQuantity() <= 0) {
-                    iterator.remove();
+                    iter.remove();
                 }
                 recalculate();
                 return;
@@ -53,7 +52,7 @@ public class Cart {
     }
 
     public void removeProduct(Long id) {
-        items.removeIf(p -> p.getProductId().equals(id));
+        items.removeIf(o -> o.getProductId().equals(id));
         recalculate();
     }
 
@@ -68,5 +67,4 @@ public class Cart {
             totalPrice += o.getPrice();
         }
     }
-
 }

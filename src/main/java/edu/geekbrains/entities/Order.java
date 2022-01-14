@@ -3,11 +3,15 @@ package edu.geekbrains.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity(name = "orders")
+@Entity
+@Table(name = "orders")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,8 +21,15 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<OrderItem> items;
+
     @Column(name = "total_price")
-    private BigDecimal totalPrice;
+    private Integer totalPrice;
 
     @Column(name = "address")
     private String address;
@@ -26,13 +37,11 @@ public class Order {
     @Column(name = "phone")
     private String phone;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    public Order(BigDecimal totalPrice, String address, String phone) {
-        this.totalPrice = totalPrice;
-        this.address = address;
-        this.phone = phone;
-    }
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

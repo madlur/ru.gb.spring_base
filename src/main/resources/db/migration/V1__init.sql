@@ -2,12 +2,14 @@ CREATE TABLE IF NOT EXISTS products
 (
     id    BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
-    price INT          NOT NULL
+    price INT          NOT NULL,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 );
 
 
 INSERT INTO products (id, title, price)
-VALUES (1, 'Мололко', 112),
+VALUES (1, 'Мололко', 100),
        (2, 'Кефир', 80),
        (3, 'Творог', 56),
        (4, 'Сахар', 12),
@@ -20,7 +22,9 @@ CREATE TABLE IF NOT EXISTS users
     password VARCHAR(100)        NOT NULL,
     email    VARCHAR(100),
     address  VARCHAR(100),
-    phone    VARCHAR(100)
+    phone    VARCHAR(100),
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 );
 
 INSERT INTO users (id, username, password, email, address, phone)
@@ -30,22 +34,23 @@ VALUES (1, 'admin', '$2y$10$72R3hM0PQn6RwRRLs9Vvn.8qiLQ/..o6gcrvxyfodIs73jJEj23d
 CREATE TABLE IF NOT EXISTS roles
 (
     id   BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 );
 
-INSERT INTO roles (id, name)
-VALUES (1, 'ADMIN'),
-       (2, 'USER');
+INSERT INTO roles (name)
+VALUES ('ROLE_USER'),
+       ('ROLE_ADMIN');
 
 
 CREATE TABLE IF NOT EXISTS users_roles
 (
-    id      BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    PRIMARY KEY (user_id, role_id),
     user_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (role_id) REFERENCES roles (id),
-    UNIQUE (user_id, role_id)
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 );
 
 INSERT INTO users_roles (user_id, role_id)
@@ -60,6 +65,8 @@ CREATE TABLE IF NOT EXISTS orders
     total_price     INT NOT NULL,
     address         VARCHAR(255),
     phone           VARCHAR(255),
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
@@ -71,6 +78,14 @@ CREATE TABLE IF NOT EXISTS order_items
     quantity        INT NOT NULL,
     price_per_product INT NOT NULL,
     price           INT NOT NULL,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
     FOREIGN KEY (order_id) REFERENCES orders (id),
     FOREIGN KEY (product_id) REFERENCES products (id)
 );
+
+insert into orders (user_id, total_price, address, phone)
+values (1, 200, 'address', '12345');
+
+insert into order_items (product_id, order_id, quantity, price_per_product, price)
+values (1, 1, 2, 100, 200);
