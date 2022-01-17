@@ -1,0 +1,14 @@
+hibernate_example_2_hw\ProductDao.class
+hibernate_example_2_hw\ProductDaoImpl.class
+hibernate_example_2_hw\SessionFactoryUtils.class
+edu\geekbrains\spring_test_lesson\ProductDaoImpl.class
+hibernate_example_2_hw\ProductService.class
+edu\geekbrains\spring_test_lesson\ProductController.class
+edu\geekbrains\spring_test_lesson\ProductService.class
+hibernate_example_2_hw\MainApp.class
+hibernate_example_2_hw\Product.class
+hibernate_example_2_hw\Customer.class
+edu\geekbrains\spring_test_lesson\Product.class
+hibernate_example_2_hw\CustomerDao.class
+edu\geekbrains\spring_test_lesson\DemoSpringApplication.class
+edu\geekbrains\spring_test_lesson\SessionFactoryUtils.class
