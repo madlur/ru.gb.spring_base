@@ -13,7 +13,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +38,24 @@ public class ProductsService {
         return productsRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
+    public static final Function<Product, edu.geekbrains.soap.Product> functionEntityToSoap = pe -> {
+        edu.geekbrains.soap.Product p = new edu.geekbrains.soap.Product();
+        p.setId(pe.getId());
+        p.setTitle(pe.getTitle());
+        p.setPrice(pe.getPrice());
+        return p;
+    };
+
     public Optional<Product> findById(Long id) {
         return productsRepository.findById(id);
+    }
+
+    public edu.geekbrains.soap.Product findByIdSoap(Long id) {
+        return productsRepository.findById(id).map(functionEntityToSoap).get();
+    }
+
+    public List<edu.geekbrains.soap.Product> getAllProductsSoap() {
+        return productsRepository.findAll().stream().map(functionEntityToSoap).collect(Collectors.toList());
     }
 
     public void deleteById(Long id) {
