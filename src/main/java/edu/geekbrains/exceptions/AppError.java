@@ -5,15 +5,32 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Data
-@NoArgsConstructor
 public class AppError {
+    private int statusCode;
     private String message;
-    private Date date;
 
-    public AppError(String message) {
-        this.message = message;
-        this.date = new Date();
+    public int getStatusCode() {
+        return statusCode;
     }
 
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public AppError() {
+    }
+
+    public AppError(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
 }
+
