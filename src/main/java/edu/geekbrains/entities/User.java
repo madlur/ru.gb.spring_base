@@ -28,6 +28,12 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone")
+    private String phone;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -35,6 +41,8 @@ public class User {
 
     private Collection<Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    private Collection<Order> orders;
 
     public User(String userName, String password, String email) {
         this.userName = userName;

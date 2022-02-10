@@ -62,6 +62,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         if ($scope.user.password) {
             $scope.user.password = null;
         }
+        $scope.clearCart();
     };
 
     $scope.clearUser = function () {
@@ -85,6 +86,15 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
                 alert('UNAUTHORIZED');
             });
     }
+
+    $scope.createOrder = function () {
+
+        $http.post('http://localhost:8189/app/api/v1/orders', $localStorage.springWebUser.username)
+            .then(function successCallback(response) {
+            }, function errorCallback(response) {
+                alert('UNAUTHORIZED');
+            });
+    };
 
     $scope.loadProducts();
     $scope.loadCart();

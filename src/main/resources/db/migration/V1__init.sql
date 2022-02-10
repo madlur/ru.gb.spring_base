@@ -18,13 +18,14 @@ CREATE TABLE IF NOT EXISTS users
     id       BIGINT              NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100)        NOT NULL,
-    email    VARCHAR(100)
-
+    email    VARCHAR(100),
+    address  VARCHAR(100),
+    phone    VARCHAR(100)
 );
 
-INSERT INTO users (id, username, password, email)
-VALUES (1, 'admin', '$2y$10$72R3hM0PQn6RwRRLs9Vvn.8qiLQ/..o6gcrvxyfodIs73jJEj23da', 'admin@admin.ru'),
-       (2, 'user', '$2y$10$YNIoi4EP1oCoXaEx7y3Utur2hGFyPX32Oskd1thyQ1BxuhZwP2ur6', 'user@user.ru');
+INSERT INTO users (id, username, password, email, address, phone)
+VALUES (1, 'admin', '$2y$10$72R3hM0PQn6RwRRLs9Vvn.8qiLQ/..o6gcrvxyfodIs73jJEj23da', 'admin@admin.ru', '675425, Новгородская область, город Москва, наб. Домодедовская, 58', '+79000010203'),
+       (2, 'user', '$2y$10$YNIoi4EP1oCoXaEx7y3Utur2hGFyPX32Oskd1thyQ1BxuhZwP2ur6', 'user@user.ru', '330250, Магаданская область, город Луховицы, въезд Гагарина, 03', '+79990154693');
 
 CREATE TABLE IF NOT EXISTS roles
 (
@@ -55,7 +56,7 @@ VALUES (1, 1),
 CREATE TABLE IF NOT EXISTS orders
 (
     id              BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id         BIGINT NOT NULL,
+    user_id         BIGINT,
     total_price     INT NOT NULL,
     address         VARCHAR(255),
     phone           VARCHAR(255),
