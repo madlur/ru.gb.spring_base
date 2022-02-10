@@ -3,8 +3,10 @@ package edu.geekbrains.services;
 
 import edu.geekbrains.dto.ProductDto;
 import edu.geekbrains.entities.Product;
+import edu.geekbrains.exceptions.ResourceNotFoundException;
 import edu.geekbrains.repositories.ProductRepository;
 import edu.geekbrains.repositories.specifications.ProductSpecification;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,19 +15,17 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    public void setProductRepository(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
-    public Page<ProductDto> find(String title, BigDecimal min, BigDecimal max, Long page) {
+    public Page<Product> findAll(String title, BigDecimal min, BigDecimal max, Long page) {
         Specification<Product> spec = Specification.where(null);
         if (min != null) {
             spec = spec.and(ProductSpecification.priceGreaterOrEqualsThan(min));
@@ -37,39 +37,29 @@ public class ProductService {
             spec = spec.and(ProductSpecification.nameLike(title));
         }
 
-        return productRepository.findAll(spec, PageRequest.of((int) (page - 1), 20)).map(p -> new ProductDto(p));
+        return productRepository.findAll(spec, PageRequest.of((int) (page - 1), 50));
     }
 
-    public List<Product> findAll(BigDecimal min, BigDecimal max) {
-        return productRepository.findAllByPriceBetween(min, max);
+
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
-    public ProductDto getProductById(Long id) {
-        return productRepository.findById(id).map(p -> new ProductDto(p)).get();
-    }
-
-    public void deleteProductById(Long id) {
+    public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 
 
-    public void saveProduct(ProductDto productDto) {
-        Product product = new Product();
-        product.setId(productDto.getId());
-        product.setTitle(productDto.getTitle());
-        product.setDescription(productDto.getDescription());
-        product.setPrice(productDto.getPrice());
-        product.setQuantity(productDto.getQuantity());
-
-        productRepository.save(product);
-
+    public Product save(Product product) {
+        return productRepository.save(product);
     }
 
-
     @Transactional
-    public void changeQuantity(Long productId, Integer delta) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("ERROR"));
-        product.setQuantity((product.getQuantity()) + delta);
+    public Product update(ProductDto productDto) {
+        Product product = productRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукт, не найден в базе, id: " + productDto.getId()));
+        product.setPrice(productDto.getPrice());
+        product.setTitle(productDto.getTitle());
+        return product;
     }
 
 

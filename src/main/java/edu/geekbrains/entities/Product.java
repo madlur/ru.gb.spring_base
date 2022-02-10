@@ -16,24 +16,17 @@ public class Product implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "quantity")
-    private int quantity;
 
     public Product() {
     }
 
-    public Product(Long id, String title, String description, BigDecimal price, int quantity) {
+    public Product(Long id, String title, BigDecimal price) {
         this.id = id;
         this.title = title;
-        this.description = description;
         this.price = price;
-        this.quantity = quantity;
     }
 
     public Long getId() {
@@ -58,21 +51,5 @@ public class Product implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 }
