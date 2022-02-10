@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ProductsService {
     private final ProductsRepository productsRepository;
 
-    public Page<Product> findAll(Integer minPrice, Integer maxPrice, String partTitle, Integer page) {
+    public Page<Product> findAll(Integer minPrice, Integer maxPrice, String partTitle, String category, Integer page) {
         Specification<Product> spec = Specification.where(null);
         if (minPrice != null) {
             spec = spec.and(ProductsSpecifications.priceGreaterOrEqualsThan(minPrice));
@@ -34,11 +34,14 @@ public class ProductsService {
         if (partTitle != null) {
             spec = spec.and(ProductsSpecifications.titleLike(partTitle));
         }
+        if (category != null) {
+            spec = spec.and(ProductsSpecifications.categoryLike(category));
+        }
 
         return productsRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
-    public static final Function<Product, edu.geekbrains.soap.Product> functionEntityToSoap = pe -> {
+        public static final Function<Product, edu.geekbrains.soap.Product> functionEntityToSoap = pe -> {
         edu.geekbrains.soap.Product p = new edu.geekbrains.soap.Product();
         p.setId(pe.getId());
         p.setTitle(pe.getTitle());

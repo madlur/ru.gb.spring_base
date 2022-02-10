@@ -1,24 +1,18 @@
+
+CREATE TABLE IF NOT EXISTS  category(
+                                        id bigserial primary key,
+                                        name VARCHAR(100) NOT NULL
+);
+
 create table products
 (
     id         bigserial primary key,
     title      varchar(255),
     price      int,
+    category_id int references category (id),
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp
 );
-
-insert into products (title, price)
-values ('Milk', 100),
-       ('Bread', 80),
-       ('Cheese', 90),
-       ('Cheese2', 90),
-       ('Cheese3', 90),
-       ('Cheese4', 90),
-       ('Cheese5', 90),
-       ('Cheese6', 90),
-       ('Cheese7', 90),
-       ('Cheese8', 90),
-       ('Cheese9', 90);
 
 create table users
 (
@@ -47,18 +41,6 @@ create table users_roles
     primary key (user_id, role_id)
 );
 
-insert into roles (name)
-values ('ROLE_USER'),
-       ('ROLE_ADMIN');
-
-insert into users (username, password, email)
-values ('bob', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'bob_johnson@gmail.com'),
-       ('john', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'john_johnson@gmail.com');
-
-insert into users_roles (user_id, role_id)
-values (1, 1),
-       (2, 2);
-
 create table orders
 (
     id          bigserial primary key,
@@ -81,6 +63,35 @@ create table order_items
     created_at        timestamp default current_timestamp,
     updated_at        timestamp default current_timestamp
 );
+
+
+INSERT INTO category (name) VALUES
+                                             ('Продукты'),
+                                             ('Бакалея'),
+                                             ('Молочные продукты');
+
+
+insert into products (title, price, category_id)
+values ('Молоко', 78, 3),
+       ('Хлеб', 40, 1),
+       ('Сыр Российский', 90, 3),
+       ('Шпроты', 300, 2),
+       ('Картошка', 90, 1),
+       ('Чипсы', 112, 2),
+       ('Макароны', 90, 1);
+
+insert into roles (name)
+values ('ROLE_USER'),
+       ('ROLE_ADMIN');
+
+insert into users (username, password, email)
+values ('bob', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'bob_johnson@gmail.com'),
+       ('john', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'john_johnson@gmail.com');
+
+insert into users_roles (user_id, role_id)
+values (1, 1),
+       (2, 2);
+
 
 insert into orders (user_id, total_price, address, phone)
 values (1, 200, 'address', '12345');
